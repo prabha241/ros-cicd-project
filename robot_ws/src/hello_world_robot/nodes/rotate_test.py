@@ -45,6 +45,10 @@ class RotatorTimeTest(unittest.TestCase):
             self.test_time = rospy.get_param('TIME_TEST_LENGTH_IN_SECONDS')
         else:
             self.test_time = 60
+        if rospy.get_param('ROTATION_SPEED'):
+            self.rotator.rotation_speed = int(rospy.get_param('ROTATION_SPEED'))
+        else:
+            self.rotator.rotation_speed = 0.2
     
     def check_complete(self):
         if msg.clock.secs > self.test_time and self.is_completed == False:
