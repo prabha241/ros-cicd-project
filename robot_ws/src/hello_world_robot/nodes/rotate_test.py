@@ -37,12 +37,11 @@ class SimulationUtils():
 class RotatorTimeTest(unittest.TestCase):
     
     def setUp(self):
-        self.test_name = 'rotate_test'
         if rospy.get_param('ROTATION_SPEED'):
-            self.rotation_speed = int(rospy.get_param('ROTATION_SPEED'))
+            self.rotation_speed = rospy.get_param('ROTATION_SPEED')
         else:
             self.rotation_speed = 0.2
-        self.rotator = Rotator(self.rotation_speed)
+        self.test_name = 'rotate_test'
         self.utils = SimulationUtils()
         self.is_completed = False
         if rospy.get_param('TIME_TEST_LENGTH_IN_SECONDS'):
@@ -50,17 +49,33 @@ class RotatorTimeTest(unittest.TestCase):
         else:
             self.test_time = 60
     
-    def check_complete(self):
+    def check_speed(self):
+        if msg.angular.z = self.rotation_speed and self.is_completed == False:
+            return True
+        else:
+            return False
+            
+    def check_complete_dynamic_speed(self):
         if msg.clock.secs > self.test_time and self.is_completed == False:
             self.is_completed == True
-            self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
+            self.utils.set_tag(name = self.test_name + "_with_dynamic_speed" , value = "Passed")
             self.utils.cancel_job()
-
+            
+    def check_complete_standard_speed(self):
+        if msg.clock.secs > self.test_time and self.is_completed == False:
+            self.is_completed == True
+            self.utils.set_tag(name = self.test_name + "_with_standard_speed" , value = "Passed")
+            self.utils.cancel_job()
     def test_rotator_time(self):
         try:
-            self.clock = rospy.Subscriber('/clock', Clock, self.check_complete)
-            self.rotator.rotate_forever()
-            self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
+            self.speed_check = rospy.Subscriber("/cmd_vel", Twist, self.check_speed)
+            if self.speed_check:
+                self.clock = rospy.Subscriber('/clock', Clock, self.check_complete_dynamic_speed)
+                self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
+            else:
+                self.clock = rospy.Subscriber('/clock', Clock, self.check_complete_standard_speed)
+                self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
+            rospy.spin()
         except:
             self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Status" , value = "Failed")
             self.utils.cancel_job()
