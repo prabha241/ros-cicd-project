@@ -53,7 +53,7 @@ class RotatorTimeTest(unittest.TestCase):
             self.test_time = 60
     
     def check_speed(self):
-        if msg.angular.z = self.rotation_speed and self.is_completed == False and self.dynamic_speed:
+        if msg.angular.z == self.rotation_speed and self.is_completed == False and self.dynamic_speed:
             return True
         else:
             return False
