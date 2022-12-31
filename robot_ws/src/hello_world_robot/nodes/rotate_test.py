@@ -37,10 +37,13 @@ class SimulationUtils():
 class RotatorTimeTest(unittest.TestCase):
     
     def setUp(self):
+        self.dynamic_speed = False
         if rospy.get_param('ROTATION_SPEED'):
+            self.dynamic_speed = True
             self.rotation_speed = rospy.get_param('ROTATION_SPEED')
         else:
             self.rotation_speed = 0.2
+    
         self.test_name = 'rotate_test'
         self.utils = SimulationUtils()
         self.is_completed = False
@@ -50,7 +53,7 @@ class RotatorTimeTest(unittest.TestCase):
             self.test_time = 60
     
     def check_speed(self):
-        if msg.angular.z = self.rotation_speed and self.is_completed == False:
+        if msg.angular.z = self.rotation_speed and self.is_completed == False and self.dynamic_speed:
             return True
         else:
             return False
