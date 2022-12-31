@@ -23,9 +23,9 @@ import rospy
 
 class Rotator():
 
-    def __init__(self):
+    def __init__(self,speed):
         self._cmd_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-        self.rotation_speed = 0.2
+        self.rotation_speed = speed
 
     def rotate_forever(self):
         self.twist = Twist()
@@ -41,7 +41,7 @@ class Rotator():
 def main():
     rospy.init_node('rotate')
     try:
-        rotator = Rotator()
+        rotator = Rotator(0.2)
         rotator.rotate_forever()
     except rospy.ROSInterruptException:
         pass
