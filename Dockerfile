@@ -18,7 +18,7 @@ ARG LOCAL_WS_DIR=workspace
 # User to create and use (default: robomaker)
 ARG USERNAME=robomaker
 # The gazebo version to use if applicable (ex: gazebo-9, gazebo-11)
-ARG GAZEBO_VERSION=gazebo-9
+ARG GAZEBO_VERSION=gazebo-9.1
 # Where to store the built application in the runtime image.
 ARG IMAGE_WS_DIR=/home/$USERNAME/workspace
 
