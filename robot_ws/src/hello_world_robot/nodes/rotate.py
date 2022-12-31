@@ -23,10 +23,12 @@ import rospy
 
 class Rotator():
 
-    def __init__(self,speed):
+    def __init__(self):
         self._cmd_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
-        self.rotation_speed = speed
-
+        if rospy.get_param('ROTATION_SPEED'):
+            self.rotation_speed = rospy.get_param('ROTATION_SPEED')
+        else:
+            self.rotation_speed = 0.2
     def rotate_forever(self):
         self.twist = Twist()
 
