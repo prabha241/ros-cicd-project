@@ -8,9 +8,9 @@ import os
 import unittest
 
 from rosgraph_msgs.msg import Clock
-from ros_monitoring_msgs.msg import MetricList
 from robomaker_simulation_msgs.msg import Tag
 from robomaker_simulation_msgs.srv import Cancel, AddTags
+from geometry_msgs.msg import Twist
 
 class SimulationUtils():
 
@@ -25,6 +25,7 @@ class SimulationUtils():
             rospy.logerr("Cancel request failed: %s", response.message)
 
     def set_tag(self,name, value):
+        rospy.loginfo("inside tag")
         rospy.wait_for_service('/robomaker/job/add_tags')
         requestAddTags = rospy.ServiceProxy('/robomaker/job/add_tags', AddTags)
         tags = ([Tag(key=name, value=value)])
@@ -38,46 +39,62 @@ class RotatorTimeTest(unittest.TestCase):
     
     def setUp(self):
         self.dynamic_speed = False
-        if rospy.get_param('ROTATION_SPEED'):
+        if os.getenv('ROTATION_SPEED'):
             self.dynamic_speed = True
-            self.rotation_speed = rospy.get_param('ROTATION_SPEED')
+            self.start_time = time.time()
+            self.rotation_speed = float(os.getenv('ROTATION_SPEED'))
         else:
             self.rotation_speed = 0.2
+        rospy.loginfo(self.rotation_speed)
     
         self.test_name = 'rotate_test'
         self.utils = SimulationUtils()
         self.is_completed = False
-        if rospy.get_param('TIME_TEST_LENGTH_IN_SECONDS'):
-            self.test_time = rospy.get_param('TIME_TEST_LENGTH_IN_SECONDS')
+        self.speed_check = False
+        if os.getenv('TIME_TEST_LENGTH_IN_SECONDS'):
+            self.test_time = float(os.getenv('TIME_TEST_LENGTH_IN_SECONDS'))
         else:
-            self.test_time = 60
+            self.test_time = float(10)
     
-    def check_speed(self):
+    def check_speed(self,msg):
+        rospy.loginfo("inside check")
         if msg.angular.z == self.rotation_speed and self.is_completed == False and self.dynamic_speed:
-            return True
+            rospy.loginfo(type(msg.angular.z))
+            rospy.loginfo("check speed")
+            self.speed_check = True
+            self.check_complete_dynamic_speed()
+            pass
         else:
-            return False
+            rospy.loginfo(type(msg.angular.z))
+            rospy.loginfo("no check speed")
+            self.check_complete_standard_speed()
+            pass
             
     def check_complete_dynamic_speed(self):
-        if msg.clock.secs > self.test_time and self.is_completed == False:
-            self.is_completed == True
+        rospy.loginfo("check2")
+        self.time_now = time.time()
+        rospy.loginfo(self.time_now-self.start_time)
+        if self.time_now-self.start_time > self.test_time and self.is_completed == False:
+            rospy.loginfo(self.time_now-self.start_time)
+            rospy.loginfo("done1")
+            self.is_completed = True
             self.utils.set_tag(name = self.test_name + "_with_dynamic_speed" , value = "Passed")
+            rospy.loginfo("dynamic_speed")
             self.utils.cancel_job()
             
     def check_complete_standard_speed(self):
-        if msg.clock.secs > self.test_time and self.is_completed == False:
+        rospy.loginfo("check3")
+        self.time_now = time.time()
+        rospy.loginfo(self.time_now-self.start_time)
+        if self.time_now-self.start_time > self.test_time and self.is_completed == False:
+            rospy.loginfo("done")
+            rospy.loginfo("standard speed")
             self.is_completed == True
             self.utils.set_tag(name = self.test_name + "_with_standard_speed" , value = "Passed")
             self.utils.cancel_job()
     def test_rotator_time(self):
         try:
-            self.speed_check = rospy.Subscriber("/cmd_vel", Twist, self.check_speed)
-            if self.speed_check:
-                self.clock = rospy.Subscriber('/clock', Clock, self.check_complete_dynamic_speed)
-                self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
-            else:
-                self.clock = rospy.Subscriber('/clock', Clock, self.check_complete_standard_speed)
-                self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
+            rospy.Subscriber("/cmd_vel", Twist, self.check_speed)
             rospy.spin()
         except:
             self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Status" , value = "Failed")
@@ -88,4 +105,4 @@ class RotatorTimeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     rospy.init_node("rotate_test", log_level=rospy.INFO)
-    rostest.rosrun("helloworld_robot", "rotate_test", RotatorTimeTest)
+    rostest.rosrun("hello_world_robot", "rotate_test", RotatorTimeTest)
