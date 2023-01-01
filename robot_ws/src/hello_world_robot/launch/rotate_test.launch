@@ -11,5 +11,5 @@
 
   <!-- Rotate the robot on launch -->
   <param name="TIME_TEST_LENGTH_IN_SECONDS" type="int" value="$(optenv TIME_TEST_LENGTH_IN_SECONDS 60)" />
-  <node pkg="hello_world_robot" type="rotate_test.py" name="rotate_test" output="screen"/>
+  <test test-name="rotate_test" pkg="hello_world_robot" type="rotate_test.py"/>
 </launch>
