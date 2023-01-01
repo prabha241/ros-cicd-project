@@ -73,7 +73,7 @@ class RotatorTimeTest(unittest.TestCase):
     def check_complete_dynamic_speed(self):
         rospy.loginfo("check2")
         self.time_now = time.time()
-        rospy.loginfo(self.time_now)
+        rospy.loginfo(self.time_now-self.start_time)
         if self.time_now-self.start_time > self.test_time and self.is_completed == False:
             rospy.loginfo(self.time_now-self.start_time)
             rospy.loginfo("done1")
@@ -85,7 +85,7 @@ class RotatorTimeTest(unittest.TestCase):
     def check_complete_standard_speed(self):
         rospy.loginfo("check3")
         self.time_now = time.time()
-        rospy.loginfo(self.time_now)
+        rospy.loginfo(self.time_now-self.start_time)
         if self.time_now-self.start_time > self.test_time and self.is_completed == False:
             rospy.loginfo("done")
             rospy.loginfo("standard speed")
