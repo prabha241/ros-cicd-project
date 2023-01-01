@@ -1,2 +1,2 @@
 - git: {local-name: src/deps/turtlebot3-description-reduced-mesh, uri: "https://github.com/aws-robotics/turtlebot3-description-reduced-mesh.git", version: "ros1"}
-- git: {local-name: src/aws-robomaker-simulation-ros-pkgs, uri: 'https://github.com/aws-robotics/aws-robomaker-simulation-ros-pkgs.git', version: "melodic"}
+- git: {local-name: src/deps/aws-robomaker-simulation-ros-pkgs, uri: 'https://github.com/aws-robotics/aws-robomaker-simulation-ros-pkgs.git', version: "melodic"}
