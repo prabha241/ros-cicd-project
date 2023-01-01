@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from rotate import Rotator
 
 import rospy
 import rostest
