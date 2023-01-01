@@ -103,4 +103,4 @@ class RotatorTimeTest(unittest.TestCase):
 
 if __name__ == "__main__":
     rospy.init_node("rotate_test", log_level=rospy.INFO)
-    rostest.rosrun("helloworld_robot", "rotate_test", RotatorTimeTest)
+    rostest.rosrun("hello_world_simulation", "rotate_test", RotatorTimeTest)
