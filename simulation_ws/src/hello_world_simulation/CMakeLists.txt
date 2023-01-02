@@ -12,10 +12,6 @@ find_package(catkin REQUIRED COMPONENTS
   turtlebot3_description # required to install .rviz model
 )
 
-################################################################################
-# Setup for python modules and scripts
-################################################################################
-catkin_python_setup()
 
 ################################################################################
 # Declare ROS messages, services and actions
