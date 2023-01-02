@@ -14,6 +14,7 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   rosgraph_msgs
   nav_msgs
+  robomaker_simulation_msgs
   turtlebot3_description # required to install .rviz model
 )
 
