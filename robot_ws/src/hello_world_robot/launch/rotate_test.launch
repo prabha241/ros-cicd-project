@@ -1,8 +1,6 @@
 <launch>
   <include file="$(find hello_world_robot)/launch/rotate.launch">
   </include>
-  <include file="$(find robomaker_simulation_service)/launch/start.launch">
-  </include>
   <!-- Rotate the robot on launch -->
   <param name="TIME_TEST_LENGTH_IN_SECONDS" type="int" value="$(optenv TIME_TEST_LENGTH_IN_SECONDS 60)" />
   <test test-name="rotate_test" pkg="hello_world_robot" type="rotate_test.py"/>
