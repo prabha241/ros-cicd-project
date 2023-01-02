@@ -2,10 +2,7 @@ cmake_minimum_required(VERSION 2.8.3)
 project(hello_world_simulation)
 
 find_package(catkin REQUIRED COMPONENTS
-  gazebo_ros
-  turtlebot3_description    # required to install .rviz model
-)
-find_package(catkin REQUIRED COMPONENTS
+  gazebo_ros  
   rospy
   std_msgs
   sensor_msgs
@@ -33,6 +30,7 @@ catkin_python_setup()
 ################################################################################
 catkin_package(
   CATKIN_DEPENDS
+    gazebo_ros
     rospy
     std_msgs
     sensor_msgs
@@ -40,6 +38,8 @@ catkin_package(
     nav_msgs
     message_runtime
     rosgraph_msgs
+    robomaker_simulation_msgs
+    robomaker_simulation_service
 )
 
 ################################################################################
@@ -53,13 +53,6 @@ include_directories(
 ################################################################################
 # Install
 ################################################################################
-catkin_install_python(PROGRAMS 
-  nodes/rotate.py
-  nodes/rotate_test.py
-  DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-)
-
-catkin_package(DEPENDS gazebo_ros)
 
 install(DIRECTORY launch worlds
   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
