@@ -46,6 +46,7 @@ FROM public.ecr.aws/docker/library/ros:${ROS_DISTRO}-ros-base AS ros-robomaker-b
 ARG USERNAME
 ARG IMAGE_WS_DIR
 
+
 RUN apt-get clean
 RUN apt-get update && apt-get install -y \
     lsb  \
@@ -55,12 +56,15 @@ RUN apt-get update && apt-get install -y \
     xterm \
     python3-colcon-common-extensions \
     devilspie \
-    xfce4-terminal
+    xfce4-terminal \
+    python-pip
+
+RUN pip install boto3
 
 RUN groupadd $USERNAME && \
     useradd -ms /bin/bash -g $USERNAME $USERNAME && \
     sh -c 'echo "$USERNAME ALL=(root) NOPASSWD:ALL" >> /etc/sudoers'
-
+    
 USER $USERNAME
 WORKDIR /home/$USERNAME
 
