@@ -1,1 +1,104 @@
-
+{
+  "scenarios": {
+    "LongFastTest": {
+      "robotEnvironmentVariables": {
+        "ROS_IP": "ROBOMAKER_ROBOT_APP_IP",
+        "ROS_MASTER_URI": "http://ROBOMAKER_ROBOT_APP_IP:11311",
+        "GAZEBO_MASTER_URI": "http://ROBOMAKER_SIM_APP_IP:11345",
+        "ROTATION_SPEED": "0.5",
+        "TIME_TEST_LENGTH_IN_SECONDS": "120",
+        "AWS_REGION": "us-east-1"
+      },
+      "simEnvironmentVariables": {
+        "ROS_IP": "ROBOMAKER_SIM_APP_IP",
+        "ROS_MASTER_URI": "http://ROBOMAKER_ROBOT_APP_IP:11311",
+        "GAZEBO_MASTER_URI": "http://ROBOMAKER_SIM_APP_IP:11345",
+        "TURTLEBOT3_MODEL": "waffle_pi"
+      }
+    },
+    "ShortSlowTest": {
+      "robotEnvironmentVariables": {
+        "ROS_IP": "ROBOMAKER_ROBOT_APP_IP",
+        "ROS_MASTER_URI": "http://ROBOMAKER_ROBOT_APP_IP:11311",
+        "GAZEBO_MASTER_URI": "http://ROBOMAKER_SIM_APP_IP:11345",
+        "ROTATION_SPEED": "0.2",
+        "TIME_TEST_LENGTH_IN_SECONDS": "45",
+        "AWS_REGION": "us-east-1"
+      },
+      "simEnvironmentVariables": {
+        "ROS_IP": "ROBOMAKER_SIM_APP_IP",
+        "ROS_MASTER_URI": "http://ROBOMAKER_ROBOT_APP_IP:11311",
+        "GAZEBO_MASTER_URI": "http://ROBOMAKER_SIM_APP_IP:11345",
+        "TURTLEBOT3_MODEL": "waffle_pi"
+      }
+    }
+  },
+  "simulations": [
+    {
+      "scenarios": [
+        "LongFastTest",
+        "ShortSlowTest"
+      ],
+      "params": {
+        "iamRole": "arn:aws:iam::498889106520:role/ec2-instance-builder",
+        "maxJobDurationInSeconds": 600,
+        "robotApplications": [
+          {
+            "application": "arn:aws:robomaker:us-east-1:498889106520:robot-application/robomaker-cicd-project-robot-app/1672664467753",
+            "applicationVersion": "$LATEST",
+            "launchConfig": {
+              "streamUI": false,
+              "command": [
+                "roslaunch",
+                "hello_world_robot",
+                "rotate_test.launch"
+              ]
+            },
+            "tools": [
+              {
+                "streamUI": true,
+                "name": "robot-terminal",
+                "command": "/entrypoint.sh && gzclient",
+                "streamOutputToCloudWatch": true,
+                "exitBehavior": "RESTART"
+              }
+            ]
+          }
+        ],
+        "simulationApplications": [
+          {
+            "application": "arn:aws:robomaker:us-east-1:498889106520:simulation-application/robomaker-cicd-project-sim-app/1672664500263",
+            "applicationVersion": "$LATEST",
+            "launchConfig": {
+              "streamUI": true,
+              "command": [
+                "roslaunch",
+                "hello_world_simulation",
+                "empty_world.launch"
+              ]
+            },
+            "tools": [
+              {
+                "streamUI": true,
+                "name": "gzclient",
+                "command": "/entrypoint.sh && gzclient",
+                "streamOutputToCloudWatch": true,
+                "exitBehavior": "RESTART"
+              }
+            ]
+          }
+        ],
+        "vpcConfig": {
+          "assignPublicIp": true,
+          "subnets": [
+            "subnet-05c69fd197cd4a9fd",
+            "subnet-0f03ec01d691f5807"
+          ],
+          "securityGroups": [
+            "sg-04447ee21431760d5"
+          ]
+        }
+      }
+    }
+  ]
+}
