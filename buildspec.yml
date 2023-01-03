@@ -30,8 +30,6 @@ phases:
        - pip3 install boto3
        - sudo pip3 install vcstool
        - sudo apt-get install ros-$ROS_VERSION-octomap
-       - sudo snap install docker
-       - sudo service docker start
        - sudo groupadd docker
        - sudo usermod -aG docker $USER
        - newgrp docker
