@@ -40,7 +40,8 @@ phases:
       - sudo DOCKER_BUILDKIT=1 docker build . --build-arg GAZEBO_VERSION=gazebo-9 --build-arg ROS_DISTRO=$ROS_VERSION --build-arg LOCAL_WS_DIR=./$SIMULATION_WS --build-arg APP_NAME=$SIMAPP -t $SIMAPP
   post_build: 
     commands:
-      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECRURI
+      - LOGIN = aws ecr get-login-password --region us-east-1
+      - docker login -u AWS -p $LOGIN 498889106520.dkr.ecr.us-east-1.amazonaws.com
       - aws ecr delete-repository --repository-name $ROBOTAPP --force
       - aws ecr delete-repository --repository-name $SIMAPP --force
       - aws ecr create-repository --repository-name $ROBOTAPP
