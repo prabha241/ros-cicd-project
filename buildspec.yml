@@ -29,7 +29,6 @@ phases:
        - pip3 install awscli
        - pip3 install boto3
        - sudo pip3 install vcstool
-       - sudo apt-get install ros-$ROS_VERSION-octomap
   pre_build:
     commands:
       - vcs import robot_ws < ./$ROBOT_WS/.rosinstall
