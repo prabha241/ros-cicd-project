@@ -35,7 +35,6 @@ catkin_package(
     message_runtime
     rosgraph_msgs
     robomaker_simulation_msgs
-    robomaker_simulation_service
 )
 
 ################################################################################
