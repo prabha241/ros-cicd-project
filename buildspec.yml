@@ -32,24 +32,15 @@ phases:
        - sudo apt-get install ros-$ROS_VERSION-octomap
   pre_build:
     commands:
-      - . /opt/ros/$ROS_VERSION/setup.sh
-      - rosdep update
-      - sudo rosdep fix-permissions
-      - rosws update --target-workspace ./$ROBOT_WS
-      - rosdep install --from-paths ./$ROBOT_WS/src --ignore-src -r -y
       - vcs import robot_ws < ./$ROBOT_WS/.rosinstall
-      - rosws update --target-workspace ./$SIMULATION_WS
-      - rosdep install --from-paths ./$SIMULATION_WS/src --ignore-src -r -y
       - vcs import simulation_ws < ./$SIMULATION_WS/.rosinstall
   build: 
     commands: 
-      - COLCON_LOG_PATH="$CACHE_DIR/$ROBOT_WS/logs" colcon build --base-paths "./$ROBOT_WS" --build-base "$CACHE_DIR/$ROBOT_WS/build" --install-base "$CACHE_DIR/$ROBOT_WS/install"
-      - COLCON_LOG_PATH="$CACHE_DIR/$SIMULATION_WS/logs" colcon build --base-paths "./$SIMULATION_WS" --build-base "$CACHE_DIR/$SIMULATION_WS/build" --install-base "$CACHE_DIR/$SIMULATION_WS/install"
-  post_build: 
-    commands:
       - sudo docker system prune -a -f
       - sudo DOCKER_BUILDKIT=1 docker build . --build-arg ROS_DISTRO=$ROS_VERSION --build-arg LOCAL_WS_DIR=./$ROBOT_WS --build-arg APP_NAME=$ROBOTAPP -t $ROBOTAPP
       - sudo DOCKER_BUILDKIT=1 docker build . --build-arg GAZEBO_VERSION=gazebo-9 --build-arg ROS_DISTRO=$ROS_VERSION --build-arg LOCAL_WS_DIR=./$SIMULATION_WS --build-arg APP_NAME=$SIMAPP -t $SIMAPP
+  post_build: 
+    commands:
       - sudo aws ecr get-login-password --region $REGION |sudo docker login --username AWS --password-stdin $ECRURI
       - aws ecr delete-repository --repository-name $ROBOTAPP --force
       - aws ecr delete-repository --repository-name $SIMAPP --force
