@@ -11,7 +11,7 @@ env:
     SIMAPP: robomaker-cicd-project-sim-app
     ACCOUNT: 498889106520
     REGION: us-east-1
-    ECRURI: $ACCOUNT.dkr.ecr.$REGION.amazonaws.com
+    ECRURI: 498889106520.dkr.ecr.us-east-1.amazonaws.com
     ROBOTAPPARN: arn:aws:robomaker:us-east-1:498889106520:robot-application/robomaker-cicd-project-robot-app/1672664467753
     SIMAPPARN: arn:aws:robomaker:us-east-1:498889106520:simulation-application/robomaker-cicd-project-sim-app/1672664500263
     
