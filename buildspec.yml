@@ -45,8 +45,8 @@ phases:
       - aws ecr delete-repository --repository-name $SIMAPP --force
       - aws ecr create-repository --repository-name $ROBOTAPP
       - aws ecr create-repository --repository-name $SIMAPP
-      - sudo docker tag $robotapp $ECRURI/$ROBOTAPP:latest
-      - sudo docker tag $simapp $ECRURI/$ROBOTAPP:latest
+      - sudo docker tag $ROBOTAPP $ECRURI/$ROBOTAPP:latest
+      - sudo docker tag $SIMAPP $ECRURI/$ROBOTAPP:latest
       - sudo docker push $ECRURI/$ROBOTAPP
       - sudo docker push $ECRURI/$SIMAPP
       - aws robomaker update-robot-application --application $ROBOTAPPARN --robot-software-suite name=General --environment uri=$ECRURI/$ROBOTAPP:latest
