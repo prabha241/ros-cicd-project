@@ -17,7 +17,7 @@
 
   <!-- Rotate the robot on launch -->
   <param name="ROTATION_SPEED" type="double" value="$(optenv ROTATION_SPEED 0.2)" />
-  <node pkg="hello_world_robot" type="rotate.py" name="rotate" output="screen"/>
+  <node pkg="hello_world_robot" type="rotate.py" name="rotate"/>
   <!-- Publish rotate state for transforms -->
-  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen"/>
+  <node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
 </launch>
