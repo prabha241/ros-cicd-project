@@ -60,7 +60,7 @@ class RotatorTimeTest(unittest.TestCase):
             if self.speed_check == True:
                 self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started_with_dynamic_speed" , value = "Passed")
             else:
-                self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started_without_normal_speed" , value = "Failed")
+                self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started_with_dynamic_speed" , value = "Failed")
             self.is_completed == True
             self.utils.cancel_job()
     def test_rotator_time(self):
