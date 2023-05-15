@@ -41,9 +41,9 @@ class RotatorTimeTest(unittest.TestCase):
         if os.getenv('ROTATION_SPEED'):
             self.dynamic_speed = True
             self.start_time = time.time()
-            self.rotation_speed = 'b'
+            self.rotation_speed = float(os.getenv('ROTATION_SPEED'))
         else:
-            self.rotation_speed = 'c'
+            self.rotation_speed = 0.2
         self.test_name = 'rotate_test'
         self.utils = SimulationUtils()
         self.is_completed = False
@@ -67,7 +67,7 @@ class RotatorTimeTest(unittest.TestCase):
         rospy.Subscriber('/cmd_vel', Twist, self.check_speed)
         try:
             rospy.Subscriber('/clock', Clock, self.check_complete)
-            self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
+            self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Failed")
             rospy.spin()
         except:
             self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Status" , value = "Failed")
