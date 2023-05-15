@@ -41,9 +41,9 @@ class RotatorTimeTest(unittest.TestCase):
         if os.getenv('ROTATION_SPEED'):
             self.dynamic_speed = True
             self.start_time = time.time()
-            self.rotation_speed = float(os.getenv('ROTATION_SPEED'))
+            self.rotation_speed = 'b'
         else:
-            self.rotation_speed = 0.2
+            self.rotation_speed = 'c'
         self.test_name = 'rotate_test'
         self.utils = SimulationUtils()
         self.is_completed = False
