@@ -67,7 +67,7 @@ class RotatorTimeTest(unittest.TestCase):
         rospy.Subscriber('/cmd_vel', Twist, self.check_speed)
         try:
             rospy.Subscriber('/clock', Clock, self.check_complete)
-            self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Failed")
+            self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Started" , value = "Passed")
             rospy.spin()
         except:
             self.utils.set_tag(name = self.test_name + "_Time_Elapsed_Status" , value = "Failed")
