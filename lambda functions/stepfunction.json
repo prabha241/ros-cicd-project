@@ -1,0 +1,72 @@
+{
+  "StartAt": "ProcessAndLaunchBatchSimulations",
+  "States": {
+    "ProcessAndLaunchBatchSimulations": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:498889106520:function:processAndLaunchBatchSimulations",
+      "Next": "IsBatchSimRunning",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "ErrorLaunchingSimulations",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "IsBatchSimRunning": {
+      "Type": "Choice",
+      "Choices": [
+        {
+          "Variable": "$.isDone",
+          "BooleanEquals": true,
+          "Next": "SendSimSummary"
+        }
+      ],
+      "Default": "Wait"
+    },
+    "Wait": {
+      "Type": "Wait",
+      "Seconds": 30,
+      "Next": "CheckStatus"
+    },
+    "CheckStatus": {
+      "Type": "Task",
+      "Resource": "arn:aws:lambda:us-east-1:498889106520:function:checkStatus",
+      "InputPath": "$",
+      "Next": "IsBatchSimRunning",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "ErrorLaunchingSimulations",
+          "ResultPath": "$.error"
+        }
+      ]
+    },
+    "SendSimSummary": {
+      "Type": "Task",
+      "InputPath": "$",
+      "Resource": "arn:aws:lambda:us-east-1:498889106520:function:sendSimSummary",
+      "Catch": [
+        {
+          "ErrorEquals": [
+            "States.ALL"
+          ],
+          "Next": "ErrorLaunchingSimulations",
+          "ResultPath": "$.error"
+        }
+      ],
+      "End": true
+    },
+    "ErrorLaunchingSimulations": {
+      "Type": "Task",
+      "InputPath": "$",
+      "Resource": "arn:aws:lambda:us-east-1:498889106520:function:errorLaunchingSimulations",
+      "ResultPath": "$.error",
+      "End": true
+    }
+  }
+}
