@@ -5,7 +5,7 @@
         "ROS_IP": "ROBOMAKER_ROBOT_APP_IP",
         "ROS_MASTER_URI": "http://ROBOMAKER_ROBOT_APP_IP:11311",
         "GAZEBO_MASTER_URI": "http://ROBOMAKER_SIM_APP_IP:11345",
-        "ROTATION_SPEED": "0.8",
+        "ROTATION_SPEED": "0.9",
         "TIME_TEST_LENGTH_IN_SECONDS": "90",
         "AWS_REGION": "us-east-1"
       },
